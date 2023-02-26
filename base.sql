@@ -18,6 +18,7 @@ CREATE TABLE orders (
   pizza_id INT NOT NULL,
   quantity INT NOT NULL,
   price DECIMAL(10,2) NOT NULL,
+  status_ BOOLEAN DEAFAULT 0,
   date_ DATETIME NOT NULL
 );
 

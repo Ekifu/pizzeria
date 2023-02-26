@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<?php
-    
+    <?php
+
     session_start();
 
 
@@ -17,51 +19,52 @@
     $username = "root";
     $password = "";
     $dbname = "pizzeria";
-    $conn = new mysqli($servername, $username, $password,$dbname);
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
     $login_session = $_SESSION["login"];
     $hashed_password_session = $_SESSION["hashed_password"];
-    $password_session=$_SESSION["password"];
-    
-    if (isset($_POST['CHANGE'])){
-        $previous_password=$_POST['previous_password'];
-        $login_change=$_POST['login_change'];
-        $password_change=$_POST['password_change'];
-        $email_change=$_POST['email_change'];
-        $hashed_password=sha1($password_change);
-        // $id = mysqli_query($conn, "SELECT id FROM user_ WHERE login_= '$login_session' AND password_='$password_session'");
+    $password_session = $_SESSION["password"];
+
+    $id = mysqli_query($conn, "SELECT id FROM user_ WHERE login_= '$login_session' AND password_='$password_session'");
+    $_SESSION["id"] = $id;
+
+    if (isset($_POST['CHANGE'])) {
+        $previous_password = $_POST['previous_password'];
+        $login_change = $_POST['login_change'];
+        $password_change = $_POST['password_change'];
+        $email_change = $_POST['email_change'];
+        $hashed_password = sha1($password_change);
 
 
-        if($previous_password===$password_session){ 
-            $sql5="UPDATE `user_` SET `login_`='$login_change',`password_`='$hashed_password',`email`='$email_change' WHERE login_='$login_session' ";
+
+        if ($previous_password === $password_session) {
+            $sql5 = "UPDATE `user_` SET `login_`='$login_change',`password_`='$hashed_password',`email`='$email_change' WHERE login_='$login_session' ";
 
             if ($conn->query($sql5) === TRUE) {
                 header("Location: start.html");
+            } else {
+                echo ('Nie wpisano');
             }
-            else{
-                echo('Nie wpisano');
-            }
-        }
-        else{
-        echo('unlucky');
+        } else {
+            echo ('unlucky');
         }
 
     }
 
 
-    $hashed_password2=sha1($password_session);
+    $hashed_password2 = sha1($password_session);
 
     $result = mysqli_query($conn, "SELECT * FROM user_ WHERE login_= '$login_session' AND password_='$hashed_password2'");
     // $result = mysqli_query($conn, "SELECT * FROM user_ WHERE id= '$id'");
     echo '<table><tr><th>Login</th><th>Email</th></tr>';
-    while($row = mysqli_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         echo "<tr><td>{$row['login_']}</td><td>{$row['email']}</td></tr>";
     }
     echo '</table>';
 
 
-?>
-<!-- 
+    ?>
+    <!-- 
     <br><br><br>
 
     <div>MENU</div><br>
@@ -75,8 +78,8 @@
     </form> -->
     <br><br><br>
     <form action="koszyk.php" method="get">
-        <button type="submit">Zamów</button>
-    </form>     
+        <button type="submit">ORDER</button>
+    </form>
 
     <br><br><br><br>
 
@@ -90,4 +93,5 @@
     </form>
 
 </body>
+
 </html>
