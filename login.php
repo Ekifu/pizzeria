@@ -20,12 +20,29 @@
 
     $login_l = $_POST['login_l'];
     $password_l = $_POST['password_l'];
+    function ceasarCipher($str) {
+        $result = '';
+        $str = strtolower($str); // zamieniamy na małe litery, aby ignorować wielkość liter
+        $len = strlen($str);
+        $shift = 3; // ustalamy przesunięcie na wartość 3
+        // iterujemy po każdym znaku i przesuwamy go o wartość shift
+        for($i = 0; $i < $len; $i++) {
+            if(ord($str[$i]) >= 97 && ord($str[$i]) <= 122) { // tylko przesuwamy litery, ignorujemy znaki specjalne
+                $result .= chr((ord($str[$i]) - 97 + $shift) % 26 + 97);
+            } else {
+                $result .= $str[$i];
+            }
+        }
+        return $result;
+    }
 
-    $hashed_password = sha1($password_l);
+    $password_c=ceasarCipher($password_l);
+
+    $hashed_password = sha1($password_c);
 
     $_SESSION["login"] = $login_l;
     $_SESSION["hashed_password"] = $hashed_password;
-    $_SESSION["password"] = $password_l;
+    $_SESSION["password"] = $password_c;
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 

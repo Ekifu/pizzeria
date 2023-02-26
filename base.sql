@@ -22,6 +22,6 @@ CREATE TABLE orders (
   date_ DATETIME NOT NULL
 );
 
-INSERT INTO `admin`(`login_`, `password_`, `email`) VALUES ('pizzaman','d5860da603f14e5961af4f2cffd56bc2060fbed5','capriciosa@pizza.com')
+INSERT INTO `admin`(`login_`, `password_`, `email`) VALUES ('pizzaman','51d173b557122f3f9ded11fd8cccd0002ef48682','capriciosa@pizza.com')
 -- password="capriciosa"
-
+-- 51d173b557122f3f9ded11fd8cccd0002ef48682

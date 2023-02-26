@@ -21,8 +21,24 @@
     $password_r = $_POST['password_r'];
     $email_r = $_POST['email_r'];
 
+    function ceasarCipher($str) {
+        $result = '';
+        $str = strtolower($str); // zamieniamy na małe litery, aby ignorować wielkość liter
+        $len = strlen($str);
+        $shift = 3; // ustalamy przesunięcie na wartość 3
+        // iterujemy po każdym znaku i przesuwamy go o wartość shift
+        for($i = 0; $i < $len; $i++) {
+            if(ord($str[$i]) >= 97 && ord($str[$i]) <= 122) { // tylko przesuwamy litery, ignorujemy znaki specjalne
+                $result .= chr((ord($str[$i]) - 97 + $shift) % 26 + 97);
+            } else {
+                $result .= $str[$i];
+            }
+        }
+        return $result;
+    }
+    $password_c=ceasarCipher($password_r);
 
-    $hashed_password = sha1($password_r);
+    $hashed_password = sha1($password_c);
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 

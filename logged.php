@@ -24,20 +24,36 @@
     $login_session = $_SESSION["login"];
     $hashed_password_session = $_SESSION["hashed_password"];
     $password_session = $_SESSION["password"];
-
-    $id = mysqli_query($conn, "SELECT id FROM user_ WHERE login_= '$login_session' AND password_='$password_session'");
-    $_SESSION["id"] = $id;
+    function ceasarCipher($str) {
+        $result = '';
+        $str = strtolower($str); // zamieniamy na małe litery, aby ignorować wielkość liter
+        $len = strlen($str);
+        $shift = 3; // ustalamy przesunięcie na wartość 3
+        // iterujemy po każdym znaku i przesuwamy go o wartość shift
+        for($i = 0; $i < $len; $i++) {
+            if(ord($str[$i]) >= 97 && ord($str[$i]) <= 122) { // tylko przesuwamy litery, ignorujemy znaki specjalne
+                $result .= chr((ord($str[$i]) - 97 + $shift) % 26 + 97);
+            } else {
+                $result .= $str[$i];
+            }
+        }
+        return $result;
+    }
 
     if (isset($_POST['CHANGE'])) {
         $previous_password = $_POST['previous_password'];
         $login_change = $_POST['login_change'];
         $password_change = $_POST['password_change'];
         $email_change = $_POST['email_change'];
-        $hashed_password = sha1($password_change);
+        $password_c = ceasarCipher($password_change);
+        $hashed_password=sha1($password_c);
+
+        $c_previous=ceasarCipher($previous_password);
 
 
 
-        if ($previous_password === $password_session) {
+
+        if (sha1($c_previous) === sha1($password_session)) {
             $sql5 = "UPDATE `user_` SET `login_`='$login_change',`password_`='$hashed_password',`email`='$email_change' WHERE login_='$login_session' ";
 
             if ($conn->query($sql5) === TRUE) {
@@ -66,7 +82,6 @@
     ?>
     <!-- 
     <br><br><br>
-
     <div>MENU</div><br>
     <div>What dou you want to order?</div><br>
     <form action="logged.php" method="post">
@@ -90,6 +105,10 @@
         New e-mail: <input type="text" name="email_change"><br><br>
         Previous password: <input type="password" name="previous_password"><br><br>
         <input type="submit" value="CHANGE" name="CHANGE">
+    </form>
+    <br><br>
+    <form action="start.html" method="get">
+        <button type="submit">LOG OUT</button>
     </form>
 
 </body>

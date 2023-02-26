@@ -20,12 +20,31 @@
     $login_a = $_POST['login_a'];
     $password_a = $_POST['password_a'];
 
-    $hashed_password = sha1($password_a);
+    function ceasarCipher($str) {
+        $result = '';
+        $str = strtolower($str); // zamieniamy na małe litery, aby ignorować wielkość liter
+        $len = strlen($str);
+        $shift = 3; // ustalamy przesunięcie na wartość 3
+        // iterujemy po każdym znaku i przesuwamy go o wartość shift
+        for($i = 0; $i < $len; $i++) {
+            if(ord($str[$i]) >= 97 && ord($str[$i]) <= 122) { // tylko przesuwamy litery, ignorujemy znaki specjalne
+                $result .= chr((ord($str[$i]) - 97 + $shift) % 26 + 97);
+            } else {
+                $result .= $str[$i];
+            }
+        }
+        return $result;
+    }
+
+    $password_c=ceasarCipher($password_a);
+
+    $hashed_password = sha1($password_c);
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     $result = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM `admin` WHERE `login_` = '$login_a' AND `password_` = '$hashed_password'"));
     if ($result != 1) {
-        echo ('Niepoprawne hasło lub login');
+        echo ('Niepoprawne hasło lub login'); 
+        echo($hashed_password);
     } else {
         header("Location: logged_admin.php");
     }
