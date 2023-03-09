@@ -132,7 +132,7 @@
   $total = $row['total'];
   echo "<h2>All orders: $total zł</h2>";
 
-  echo '<h2>Delivered pizzas: </h2>';
+  echo '<h2>Waiting for driver: </h2>';
   $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = 1 AND user_id = $userId");
 
   if (mysqli_num_rows($result4) > 0) {
@@ -152,7 +152,7 @@
   } else {
     echo 'No orders.';
   }
-  echo '<h2>Pizzas in delivery: </h2>';
+  echo '<h2>In preparation: </h2>';
   $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = 0 AND user_id = $userId");
 
   if (mysqli_num_rows($result4) > 0) {
