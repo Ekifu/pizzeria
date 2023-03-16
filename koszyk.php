@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
@@ -133,7 +134,7 @@
   echo "<h2>All orders: $total zł</h2>";
 
   echo '<h2>Waiting for driver: </h2>';
-  $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = 1 AND user_id = $userId");
+  $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = '0' AND user_id = $userId");
 
   if (mysqli_num_rows($result4) > 0) {
     echo '<table>';
@@ -153,7 +154,27 @@
     echo 'No orders.';
   }
   echo '<h2>In preparation: </h2>';
-  $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = 0 AND user_id = $userId");
+  $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = '1'AND user_id = '$userId'AND delivery='0'");
+
+  if (mysqli_num_rows($result4) > 0) {
+    echo '<table>';
+    echo '<tr><th>Date of order</th><th>Type</th><th>Quantity</th><th>Price</th></tr>';
+    while ($row = mysqli_fetch_assoc($result4)) {
+      $pizzaId = $row['pizza_id'];
+      $pizza = $pizzas[$pizzaId];
+      echo '<tr>';
+      echo "<td>{$row['date_']}</td>";
+      echo "<td>{$pizza['name']}</td>";
+      echo "<td>{$row['quantity']}</td>";
+      echo "<td>{$row['price']}</td>";
+      echo '</tr>';
+    }
+    echo '</table>';
+  } else {
+    echo 'No orders.';
+  }
+  echo '<h2>Received: </h2>';
+  $result4 = mysqli_query($conn, "SELECT * FROM orders WHERE status_ = '1'AND user_id = '$userId'AND delivery='1'");
 
   if (mysqli_num_rows($result4) > 0) {
     echo '<table>';

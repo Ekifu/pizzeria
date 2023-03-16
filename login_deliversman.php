@@ -18,8 +18,8 @@
     $password = "";
     $dbname = "pizzeria";
 
-    $login_a = $_POST['login_a'];
-    $password_a = $_POST['password_a'];
+    $login_d = $_POST['login_d'];
+    $password_d = $_POST['password_d'];
 
     function ceasarCipher($str) {
         $result = '';
@@ -37,16 +37,15 @@
         return $result;
     }
 
-    $password_c=ceasarCipher($password_a);
-
+    $password_c=ceasarCipher($password_d);
     $hashed_password = sha1($password_c);
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    $result = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM `admin` WHERE `login_` = '$login_a' AND `password_` = '$hashed_password'"));
+    $result = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM `deliversman` WHERE `login_` = '$login_d' AND `password_` = '$hashed_password'"));
     if ($result != 1) {
         echo ('Niepoprawne hasło lub login'); 
     } else {
-        header("Location: logged_admin.php");
+        header("Location: logged_deliversman.php");
     }
     ?>
 
