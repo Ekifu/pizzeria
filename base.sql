@@ -34,3 +34,4 @@ INSERT INTO `admin`(`login_`, `password_`, `email`) VALUES ('pizzaman','51d173b5
 INSERT INTO `deliversman`(`login_`, `password_`, `email`) VALUES ('mario','f62c3dd976af0259a548da0c32bc665c5495e8eb','mario@pizza.com');
 -- password_admin="capriciosa"
 -- password_deliversman="fiat"
+-- DATABASE_NAME='pizzeria'
